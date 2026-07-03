@@ -93,6 +93,18 @@ def test_allows_chained_safe_commands():
     assert run_hook("git log -1 && echo ok").returncode == 0
 
 
+def test_blocks_destructive_in_chain():
+    chained = (
+        "echo starting && rm -rf /tmp/build",
+        "git status; DROP TABLE audit",
+        "npm test || git push --force origin main",
+    )
+    for cmd in chained:
+        r = run_hook(cmd)
+        assert r.returncode == 2, cmd
+        assert "BLOCKED" in r.stderr, cmd
+
+
 if __name__ == "__main__":
     test_allows_safe_commands()
     test_blocks_destructive_patterns()
@@ -101,4 +113,5 @@ if __name__ == "__main__":
     test_logs_blocked_attempt()
     test_end_to_end_logs_on_block()
     test_allows_chained_safe_commands()
+    test_blocks_destructive_in_chain()
     print("all tests passed")
