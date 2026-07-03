@@ -9,7 +9,7 @@ from pathlib import Path
 LOG = Path.home() / ".claude" / "hooks" / "blocked.log"
 
 BLOCK_PATTERNS = [
-    (re.compile(r"rm\s+(-[^\s]*\s+)*-[^\s]*r[^\s]*f|rm\s+-rf", re.I), "rm -rf"),
+    (re.compile(r"rm\s+(-[^\s]*\s+)*-[^\s]*r[^\s]*f|rm\s+-rf|rm\s+-fr", re.I), "rm -rf"),
     (re.compile(r"DROP\s+TABLE", re.I), "DROP TABLE"),
     (re.compile(r"git\s+push\s+.*--force|git\s+push\s+-f\b", re.I), "git push --force"),
     (re.compile(r"TRUNCATE\s+", re.I), "TRUNCATE"),

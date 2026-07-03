@@ -28,7 +28,9 @@ def test_allows_safe_commands():
 def test_blocks_destructive_patterns():
     blocked = (
         "rm -rf /",
+        "rm -fr /tmp",
         "git push --force origin main",
+        "git push origin main --force",
         "git push -f origin main",
         "DROP TABLE users",
         "TRUNCATE logs",
