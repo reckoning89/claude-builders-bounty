@@ -61,7 +61,31 @@ def test_generates_structured_changelog():
         assert "fix typo" in text
 
 
+def test_since_last_tag():
+    with tempfile.TemporaryDirectory() as tmp:
+        repo = Path(tmp)
+        subprocess.run(["git", "init"], cwd=repo, capture_output=True, check=True)
+        subprocess.run(["git", "config", "user.email", "t@t.com"], cwd=repo, capture_output=True, check=True)
+        subprocess.run(["git", "config", "user.name", "t"], cwd=repo, capture_output=True, check=True)
+        (repo / "a.txt").write_text("a", encoding="utf-8")
+        subprocess.run(["git", "add", "a.txt"], cwd=repo, capture_output=True, check=True)
+        subprocess.run(["git", "commit", "-m", "add feature a"], cwd=repo, capture_output=True, check=True)
+        subprocess.run(["git", "tag", "v0.1.0"], cwd=repo, capture_output=True, check=True)
+        subprocess.run(["git", "commit", "--allow-empty", "-m", "fix crash after tag"], cwd=repo, capture_output=True, check=True)
+
+        out = repo / "CHANGELOG.md"
+        sys.argv = ["changelog.py", str(repo), str(out)]
+        changelog.main()
+
+        text = out.read_text(encoding="utf-8")
+        assert "v0.1.0" in text
+        assert "Changes since v0.1.0" in text
+        assert "fix crash after tag" in text
+        assert "add feature a" not in text
+
+
 if __name__ == "__main__":
     test_categorize()
     test_generates_structured_changelog()
+    test_since_last_tag()
     print("all tests passed")
