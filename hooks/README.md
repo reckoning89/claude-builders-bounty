@@ -2,14 +2,22 @@
 
 Blocks dangerous bash commands before execution. Bounty submission.
 
-## Install (2 commands)
+## Install (1 command + paste settings)
+
+```bash
+bash hooks/install.sh
+```
+
+Copy `hooks/settings.sample.json` into `~/.claude/settings.json` (merge with existing keys).
+
+Or manual install:
 
 ```bash
 mkdir -p ~/.claude/hooks
 cp block_destructive.py ~/.claude/hooks/block_destructive.py
 ```
 
-Add to `~/.claude/settings.json`:
+Add to `~/.claude/settings.json` (or use `hooks/settings.sample.json`):
 
 ```json
 {

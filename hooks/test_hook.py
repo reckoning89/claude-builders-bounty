@@ -1,5 +1,6 @@
 """Test destructive bash hook — all bounty acceptance patterns."""
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -68,10 +69,36 @@ def test_logs_blocked_attempt():
             hook.LOG = original
 
 
+def test_end_to_end_logs_on_block():
+    with tempfile.TemporaryDirectory() as tmp:
+        env = {**os.environ, "HOME": tmp, "USERPROFILE": tmp}
+        payload = json.dumps({"tool_input": {"command": "DROP TABLE secrets"}, "cwd": "/repo/acme"})
+        r = subprocess.run(
+            [sys.executable, str(HOOK)],
+            input=payload,
+            capture_output=True,
+            text=True,
+            env=env,
+        )
+        log = Path(tmp) / ".claude" / "hooks" / "blocked.log"
+        assert r.returncode == 2
+        assert log.exists()
+        parts = log.read_text(encoding="utf-8").strip().split("\t")
+        assert len(parts) == 4
+        assert parts[2] == "/repo/acme"
+        assert "DROP TABLE" in parts[3]
+
+
+def test_allows_chained_safe_commands():
+    assert run_hook("git log -1 && echo ok").returncode == 0
+
+
 if __name__ == "__main__":
     test_allows_safe_commands()
     test_blocks_destructive_patterns()
     test_allows_delete_with_where()
     test_check_unit()
     test_logs_blocked_attempt()
+    test_end_to_end_logs_on_block()
+    test_allows_chained_safe_commands()
     print("all tests passed")
