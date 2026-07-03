@@ -32,7 +32,12 @@ Add to `~/.claude/settings.json` (or use `hooks/settings.sample.json`):
 }
 ```
 
-## Blocked patterns
+## Test
+
+```bash
+bash hooks/run_tests.sh
+# or: python hooks/test_hook.py
+```
 
 - `rm -rf`
 - `DROP TABLE`
