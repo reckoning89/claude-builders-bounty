@@ -13,9 +13,11 @@ def test_categorize():
     assert changelog.categorize("fix login timeout") == "Fixed"
     assert changelog.categorize("bug: crash on startup") == "Fixed"
     assert changelog.categorize("remove deprecated API") == "Removed"
+    assert changelog.categorize("delete legacy endpoint") == "Removed"
     assert changelog.categorize("update dependencies") == "Changed"
     assert changelog.categorize("add dark mode") == "Added"
     assert changelog.categorize("docs: refresh README") == "Changed"
+    assert changelog.categorize("patch null pointer") == "Fixed"
 
 
 def test_generates_structured_changelog():
