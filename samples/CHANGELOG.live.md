@@ -12,6 +12,7 @@ Initial changelog
 - 1aeae2a: feat: initial README with bounty board
 
 ### Changed
+- 5478445: docs: refresh live CHANGELOG sample (2026-07-06 verify pass)
 - 62dfaf9: docs: add live CHANGELOG sample generated from this repo
 - b533bb4: chore: add run_tests.sh one-command test runner for CHANGELOG skill
 - ff1dd35: docs: acceptance checklist for bounty #1 CHANGELOG skill
