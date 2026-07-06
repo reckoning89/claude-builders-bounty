@@ -5,7 +5,6 @@
 Initial changelog
 
 ### Added
-- 5b9b4df: ci: add GitHub Actions test workflow for CHANGELOG skill
 - 0b90c6e: test: expand categorize coverage (delete/patch prefixes)
 - 2a7c244: test: verify since-last-tag filtering in CHANGELOG generator
 - 870cf68: test: add categorize + git integration tests for CHANGELOG skill
@@ -13,5 +12,6 @@ Initial changelog
 - 1aeae2a: feat: initial README with bounty board
 
 ### Changed
+- 62dfaf9: docs: add live CHANGELOG sample generated from this repo
 - b533bb4: chore: add run_tests.sh one-command test runner for CHANGELOG skill
 - ff1dd35: docs: acceptance checklist for bounty #1 CHANGELOG skill
