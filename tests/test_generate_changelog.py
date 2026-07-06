@@ -32,6 +32,18 @@ def commit_file(repo: Path, name: str, message: str) -> None:
     git(repo, "commit", "-m", message)
 
 
+def test_generate_changelog_returns_nonempty_string(tmp_path: Path) -> None:
+    repo = init_repo(tmp_path)
+    commit_file(repo, "sample.txt", "initial sample commit")
+
+    output = tmp_path / "CHANGELOG.md"
+    result = generate_changelog.generate_changelog(repo, output)
+
+    assert isinstance(result, str)
+    assert result.strip()
+    assert len(result) > 0
+
+
 def test_groups_by_month_when_no_tags(tmp_path: Path) -> None:
     repo = init_repo(tmp_path)
     commit_file(repo, "a.txt", "add feature a")
